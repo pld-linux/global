@@ -7,9 +7,9 @@ diff -Nur global-4.6.orig/globash.rc global-4.6/globash.rc
  ### Working directory
 -GHOME=$HOME/.globash
 +if [ -n "$GLOBASH_HOME" ]; then
-+	GHOME=$HOME/.globash
-+else
 +	GHOME=$GLOBASH_HOME/.globash
++else
++	GHOME=$HOME/.globash
 +fi
 +GHOMECF="$GHOME"rc
 +export GHOME GHOMECF

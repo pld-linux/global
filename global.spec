@@ -7,22 +7,23 @@ Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.6
-Release:	3
+Release:	4
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
 # Source0-md5:	513418bc88a7c0051992b5345bae10bc
 Patch10:	%{name}-acinclude-fix.patch
-Patch20:	%{name}-pgsql-shared.patch
-Patch30:	%{name}-globash-altercfg.patch
+Patch20:	%{name}-ac-shared-pgsql.patch
+Patch30:	%{name}-home_etc.patch
+Patch40:	%{name}-globash-altercfg.patch
 URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+%{?with_home_etc:BuildRequires:	home-etc-devel}
 BuildRequires:	xemacs
 Requires:	coreutils
 Requires:	findutils
-%{?with_home_etc:Requires:	home-etc >= 1.0.8}
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -171,7 +172,8 @@ Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 %setup -q
 %patch10 -p1
 %patch20 -p1
-%patch30 -p1
+%{?with_home_etc:%patch30 -p1}
+%patch40 -p1
 
 %build
 %{__aclocal}
@@ -179,8 +181,8 @@ Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 %{__autoheader}
 %{__automake}
 %configure \
-	%{?with_pgsql:--with-postgres=%{_prefix}} \
-	%{?with_home_etc:--with-home-etc}
+	%{?with_pgsql:--with-postgres=shared} \
+	%{?with_home_etc:--with-home-etc=shared}
 %{__make}
 
 %install
@@ -209,32 +211,21 @@ xemacs -batch -vanilla -f batch-byte-compile \
 find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
 
 # /etc/profile.d hooks for globash
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
-%if %{with home_etc}
-GLOBASH_HOME="\$HOME_ETC"
-export GLOBASH_HOME
-%endif
-alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
-EOF
-%if %{with home_etc}
-set GLOBASH_HOME = "\$HOME_ETC"
-setenv GLOBASH_HOME
-%endif
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
-alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
-EOF
-
-# /etc/profile.d hooks for home-etc support
 # note: naming convention home-etc_hook-* makes us sure that
 #       the scriptlet will occur _after_ home-etc main scriptlet
 %if %{with home_etc}
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-global.sh
-GTAGSCONF="\$HOME_ETC/.globalrc"
-export GTAGSCONF
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-globash.sh
+alias globash='GLOBASH_HOME="\$HOME_ETC" /bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-global.csh
-set GTAGSCONF = "\$HOME_ETC/.globalrc"
-setenv GTAGSCONF
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-globash.csh
+alias globash 'setenv GLOBASH_HOME = "\$HOME_ETC" ; /bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+EOF
+%else
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
+alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+EOF
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
+alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 %endif
 
@@ -249,9 +240,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog FAQ LICENSE NEWS README THANKS
 %attr(755,root,root) %{_bindir}/g*tags
 %attr(755,root,root) %{_bindir}/global
-%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/*
 %dir %{_sysconfdir}/gtags
-%config(noreplace,missingok) %verify(not md5 size mtime) %{_sysconfdir}/gtags/*
+%config(noreplace,missingok) %verify(not md5 size mtime) %{_sysconfdir}/gtags/gtags.conf
 %{_mandir}/man1/global*
 %{_mandir}/man1/g*tags*
 %{_infodir}/*.info*

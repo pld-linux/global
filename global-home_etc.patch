@@ -1,0 +1,99 @@
+diff -Nur global-4.6.orig/gozilla/gozilla.c global-4.6/gozilla/gozilla.c
+--- global-4.6.orig/gozilla/gozilla.c	2003-07-02 05:31:15.000000000 +0200
++++ global-4.6/gozilla/gozilla.c	2004-02-20 13:32:06.000000000 +0100
+@@ -28,6 +28,13 @@
+ #include <windows.h>
+ #endif
+ 
++#ifdef HAVE_HOME_ETC_H
++#include <home_etc.h>
++#define HOMEDIR _HEdir
++#else
++#define HOMEDIR getenv("HOME")
++#endif
++
+ #include "global.h"
+ #include "regex.h"
+ #include "const.h"
+@@ -102,7 +109,7 @@
+ 	char *p, *alias = NULL;
+ 	int flag = STRBUF_NOCRLF;
+ 
+-	if (!(p = getenv("HOME")))
++	if (!(p = HOMEDIR))
+ 		goto end;
+ 	if (!test("r", makepath(p, gozillarc, NULL)))
+ #ifdef __DJGPP__
+diff -Nur global-4.6.orig/libutil/conf.c global-4.6/libutil/conf.c
+--- global-4.6.orig/libutil/conf.c	2003-07-02 05:31:15.000000000 +0200
++++ global-4.6/libutil/conf.c	2004-02-20 13:33:16.000000000 +0100
+@@ -33,6 +33,13 @@
+ #include <strings.h>
+ #endif
+ 
++#ifdef HAVE_HOME_ETC_H
++#include <home_etc.h>
++#define HOMEDIR _HEdir
++#else
++#define HOMEDIR getenv("HOME")
++#endif
++
+ #include "gparam.h"
+ #include "conf.h"
+ #include "die.h"
+@@ -213,10 +220,10 @@
+ 	/*
+ 	 * if GTAGSCONF not set then check standard config files.
+ 	 */
+-	else if ((p = getenv("HOME")) && test("r", makepath(p, GTAGSRC, NULL)))
++	else if ((p = HOMEDIR) && test("r", makepath(p, GTAGSRC, NULL)))
+ 		strlimcpy(config, makepath(p, GTAGSRC, NULL), sizeof(config));
+ #ifdef __DJGPP__
+-	else if ((p = getenv("HOME")) && test("r", makepath(p, DOS_GTAGSRC, NULL)))
++	else if ((p = HOMEDIR) && test("r", makepath(p, DOS_GTAGSRC, NULL)))
+ 		strlimcpy(config, makepath(p, DOS_GTAGSRC, NULL), sizeof(config));
+ #endif
+ 	else if (test("r", GTAGSCONF))
+diff -Nur global-4.6.orig/configure.ac global-4.6/configure.ac
+--- global-4.6.orig/configure.ac	2004-02-20 13:52:24.000000000 +0100
++++ global-4.6/configure.ac	2004-02-20 13:59:32.000000000 +0100
+@@ -132,6 +132,39 @@
+         AC_MSG_RESULT(no)
+ ])
+ 
++dnl
++dnl for home-etc support
++dnl
++AC_MSG_CHECKING(for home-etc support)
++AC_ARG_WITH(home-etc,
++[  --with-home-etc[=DIR]     include home-etc support ],
++[
++        if test "$withval" = 'no'; then
++                AC_MSG_RESULT(no)
++        else
++                case $withval in
++                ''|yes) HOMEETC=/usr/local/pgsql;;
++		shared)	HOMEETC=${prefix};;
++                *)      HOMEETC=$withval;;
++                esac
++                if ! test -d $HOMEETC; then
++                        AC_MSG_ERROR([directory '$HOMEETC' not found.])
++                fi
++		if ! test -f $HOMEETC/include/home_etc.h; then
++                        AC_MSG_ERROR([header '$HOMEETC/include/home_etc.h' not found.])
++                fi
++                INCLUDES="$INCLUDES -I$HOMEETC/include"
++                CFLAGS="$CFLAGS -DHAVE_HOME_ETC_H"
++		case $withval in
++		shared)	LDADD="$LDADD -lhome_etc -lcrypt";;
++		*)	LDADD="$LDADD $HOMEETC/lib/libhome_etc.a";;
++		esac
++                AC_MSG_RESULT([yes, using $HOMEETC])
++        fi
++],[
++        AC_MSG_RESULT(no)
++])
++
+ AC_SUBST(INCLUDES)
+ AC_SUBST(LDADD)
+ 

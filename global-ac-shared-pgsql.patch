@@ -1,0 +1,23 @@
+diff -Nur global-4.6.orig/configure.ac global-4.6/configure.ac
+--- global-4.6.orig/configure.ac	2003-07-02 05:31:16.000000000 +0200
++++ global-4.6/configure.ac	2004-02-20 13:52:24.000000000 +0100
+@@ -114,6 +114,7 @@
+         else
+                 case $withval in
+                 ''|yes) POSTGRES=/usr/local/pgsql;;
++		shared)	POSTGRES=${prefix};;
+                 *)      POSTGRES=$withval;;
+                 esac
+                 if ! test -d $POSTGRES; then
+@@ -121,7 +122,10 @@
+                 fi
+                 INCLUDES="$INCLUDES -I$POSTGRES/include"
+                 CFLAGS="$CFLAGS -DUSE_POSTGRES"
+-                LDADD="$LDADD $POSTGRES/lib/libpq.a -lcrypt"
++		case $withval in
++		shared)	LDADD="$LDADD -lpq -lcrypt";;
++		*)	LDADD="$LDADD $POSTGRES/lib/libpq.a -lcrypt";;
++		esac
+                 AC_MSG_RESULT([yes, using $POSTGRES])
+         fi
+ ],[
