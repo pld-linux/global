@@ -69,7 +69,7 @@ Informacje o znacznikach mog± byæ przechowywane w postaci plików db,
 lub te¿ wspó³dzielone przy pomocy bazy danych PostgreSQL.
 %endif
 Mo¿na tak¿e znale¼æ kilka podpakietów, które zawieraj± wsparcie dla
-dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê ¿e
+dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê z
 niektórymi znanymi edytorami kodu (dope³nianie nazw symboli,
 przeskakiwanie).
 
