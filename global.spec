@@ -215,12 +215,16 @@ find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -
 
 # /etc/profile.d hooks for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
+%if %{with home_etc}
 GLOBASH_HOME="\$HOME_ETC"
 export GLOBASH_HOME
+%endif
 alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
+%if %{with home_etc}
 set GLOBASH_HOME = "\$HOME_ETC"
 setenv GLOBASH_HOME
+%endif
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
 alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
