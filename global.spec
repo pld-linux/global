@@ -7,7 +7,7 @@ Summary:	GNU GLOBAL - common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.7
-Release:	3
+Release:	4
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/pub/gnu/global/%{name}-%{version}.tar.gz
@@ -306,7 +306,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc %{_docdir}/%{name}-%{version}/*
+%doc %{_docdir}/%{name}-%{version}
 %attr(755,root,root) %{_bindir}/g*tags
 %attr(755,root,root) %{_bindir}/global
 %dir %{_sysconfdir}/gtags
