@@ -7,7 +7,7 @@ Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.6.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
