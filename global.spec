@@ -38,6 +38,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define	vimnver		6.3
 %define vimepoch	4
 
+%define	vimshv		%(echo %{vimver} | tr -d .)
+%define	_vimdatadir	%{_datadir}/vim/vim%{vimshv}
+
 %description
 GNU GLOBAL is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
@@ -176,9 +179,6 @@ kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 %endif
 
-%define	vimshv		%(echo %{vimver} | tr -d .)
-%define	_vimdatadir	%{_datadir}/vim/vim%{vimshv}
-
 %package -n vim-global-tags
 Summary:	ViM editor plugin for GNU GLOBAL source tag system
 Summary(pl):	wtyczka dla edytora ViM do systemu odwo³añ GNU GLOBAL
@@ -246,11 +246,11 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/gtags \
 	$RPM_BUILD_ROOT%{_mandir}/man1 \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags \
-	$RPM_BUILD_ROOT%{_vimplugindir} \
+	$RPM_BUILD_ROOT%{_vimdatadir} \
 	$RPM_BUILD_ROOT/etc/profile.d
 
 # vim support
-install %{SOURCE1} $RPM_BUILD_ROOT%{_vimplugindir}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_vimdatadir}
 
 # perl wrapper
 cp gtags.pl $RPM_BUILD_ROOT%{_bindir}
