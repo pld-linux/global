@@ -3,14 +3,14 @@
 %bcond_without	xemacs		# without xemacs subpackage
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
-Summary:	GNU GLOBAL - Common source code tag system
+Summary:	GNU GLOBAL - common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.7
 Release:	2
 License:	GPL
 Group:		Development/Tools
-Source0:	http://tamacom.com/%{name}/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/pub/gnu/global/%{name}-%{version}.tar.gz
 # Source0-md5:	1662792366fa44adec3577b2d7ee33a4
 #Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
 Patch10:	%{name}-acinclude-fix.patch
@@ -59,18 +59,19 @@ GLOBAL's features, and for compliance with common code editors
 %description -l pl
 GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
 kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Mo¿esz z jego pomoc± odszukaæ podan± funkcjê lub metodê w plikach
-¼ród³owych i w ³atwy sposób siê do niej przenie¶æ. Narzêdzie to jest
-przydatne do d³ubania w du¿ych projektach, zawieraj±cych mnóstwo
-podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala Ci on
+Umo¿liwia on odszukanie podanej funkcji lub metody w plikach
+¼ród³owych i przeniesienie siê do niej w ³atwy sposób. Narzêdzie to
+jest przydatne do d³ubania w du¿ych projektach, zawieraj±cych mnóstwo
+podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala on
 utworzyæ jeden kontener ze znacznikami dla du¿ego drzewa kodu.
 %if %{with pgsql}
 Informacje o znacznikach mog± byæ przechowywane w postaci plików db,
 lub te¿ wspó³dzielone przy pomocy bazy danych PostgreSQL.
 %endif
-Mo¿esz tak¿e znale¼æ kilka podpakietów, które zawieraj± wsparcie
-dla dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê
-ze niektórymi znanymi edytorami kodu (dope³nianie nazw symboli, przeskakiwanie).
+Mo¿na tak¿e znale¼æ kilka podpakietów, które zawieraj± wsparcie dla
+dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê ¿e
+niektórymi znanymi edytorami kodu (dope³nianie nazw symboli,
+przeskakiwanie).
 
 %package htags
 Summary:	GNU GLOBAL - programs for making hypertext from source code
@@ -151,11 +152,10 @@ kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 Ten pakiet pozwala wywo³ywaæ odpowiednio przystosowan± wersjê pow³oki
 Bash z udogodnieniami, które czyni± nawigowanie po drzewku ¼róde³
 rzecz± ³atw±. Do tych udogodnieñ nale¿±: stos znaczników w stylu Vi,
-dope³nianie nazw w styly edytora Emacs, automatyczne wywo³ywanie
+dope³nianie nazw w stylu edytora Emacs, automatyczne wywo³ywanie
 edytorów lub przegl±darek, mechanizm wyró¿niania znaczników, oraz
 mechanizm ciasteczek pomagaj±cy zarz±dzaæ katalogami.
 
-%if %{with xemacs}
 %package -n xemacs-gtags-mode-pkg
 Summary:	XEmacs mode for the GNU GLOBAL source tag system
 Summary(pl):	Tryb systemu list odwo³añ GNU GLOBAL dla edytora XEmacs
@@ -176,7 +176,6 @@ GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
 kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
-%endif
 
 %package -n vim-global-tags
 Summary:	ViM editor plugin for GNU GLOBAL source tag system
@@ -252,12 +251,12 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT/etc/shrc.d \
 
 # /etc/shrc.d/*.sh hook for globash
-cat  << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.sh
+cat << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.sh
 alias globash='%{?with_home_etc:GLOBASH_HOME="\$HOME_ETC" }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
 # /etc/shrc.d/*.csh hook for globash
-cat  << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.csh
+cat << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.csh
 alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
