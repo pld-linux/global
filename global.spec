@@ -18,6 +18,7 @@ Patch40:	%{name}-globash-altercfg.patch
 URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	texinfo
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_home_etc:BuildRequires:	home-etc-devel}
 BuildRequires:	xemacs
