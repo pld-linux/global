@@ -24,7 +24,7 @@ BuildRequires:	texinfo
 BuildRequires:	xemacs
 Requires:	coreutils
 Requires:	findutils
-Requires:	id-utils
+#Requires:	id-utils
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -38,7 +38,6 @@ project containing many subdirectories, many general, main()-type
 functions. It allows you to create one tags container for a big code
 tree.
 %if %{with pgsql}
-
 Tagging information may be keeped in the traditional db files, or shared
 using the PostgreSQL database.
 %endif
@@ -56,11 +55,9 @@ przydatne do d³ubania w du¿ych projektach, zawieraj±cych mnóstwo
 podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala Ci on
 utworzyæ jeden kontener ze znacznikami dla du¿ego drzewa kodu.
 %if %{with pgsql}
-
 Informacje o znacznikach mog± byæ przechowywane w postaci plików db,
 lub te¿ wspó³dzielone przy pomocy bazy danych PostgreSQL.
 %endif
-
 Mo¿esz tak¿e znale¼æ kilka podpakietów, które zawieraj± wsparcie
 dla dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê
 ze niektórymi znanymi edytorami kodu (dope³nianie nazw symboli, przeskakiwanie).
@@ -169,6 +166,28 @@ kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 
+%package -n less-global-tags
+Summary:	less pager's helper for GNU GLOBAL source tag system
+Summary(pl):	wsparcie dla polecenia less do systemu odwo³añ GNU GLOBAL
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	xemacs
+
+%description -n less-global-tags
+GNU GLOBAL is a source code tag system that works the same way across
+diverse environments. It supports C, C++, Yacc, Java, PHP and
+assembler source code.
+
+This package allows users to navigate through GLOBAL tags and
+references system using less pager.
+
+%description -n less-global-tags -l pl
+GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
+kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+
+Ten pakiet pozwala u¿ytkownikom na nawigacjê poprzez system znaczników
+i odwo³añ systemu GLOBAL u¿ywaj±c polecenia less.
+
 %prep
 %setup -q
 %patch10 -p1
@@ -221,6 +240,11 @@ cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
 alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
+# /etc/profile.d/*sh hooks for less-global
+echo 'LESSGLOBALTAGS="global"'	     > $RPM_BUILD_ROOT/etc/profile.d/less-global.sh
+echo 'export LESSGLOBALTAGS'	    >> $RPM_BUILD_ROOT/etc/profile.d/less-global.sh
+echo 'setenv LESSGLOBALTAGS global'  > $RPM_BUILD_ROOT/etc/profile.d/less-global.csh
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -251,10 +275,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files globash
 %defattr(644,root,root,755)
-%attr(755,root,root) %config /etc/profile.d/*
+%attr(755,root,root) %config /etc/profile.d/globash*
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/gtags/globash.rc
 
 %files -n xemacs-gtags-mode-pkg
 %defattr(644,root,root,755)
 %dir %{_datadir}/xemacs-packages/lisp/*
 %{_datadir}/xemacs-packages/lisp/*/*.el*
+
+%files -n less-global-tags
+%defattr(644,root,root,755)
+%attr(755,root,root) %config /etc/profile.d/less-global*
