@@ -1,0 +1,12 @@
+diff -Nur global-4.6.orig/configure.ac global-4.6/configure.ac
+--- global-4.6.orig/configure.ac	2003-07-02 05:31:16.000000000 +0200
++++ global-4.6/configure.ac	2004-02-19 20:39:28.000000000 +0100
+@@ -121,7 +121,7 @@
+                 fi
+                 INCLUDES="$INCLUDES -I$POSTGRES/include"
+                 CFLAGS="$CFLAGS -DUSE_POSTGRES"
+-                LDADD="$LDADD $POSTGRES/lib/libpq.a -lcrypt"
++                LDADD="$LDADD -lpq -lcrypt"
+                 AC_MSG_RESULT([yes, using $POSTGRES])
+         fi
+ ],[
