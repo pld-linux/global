@@ -71,7 +71,7 @@ diff -Nur global-4.6.orig/configure.ac global-4.6/configure.ac
 +                AC_MSG_RESULT(no)
 +        else
 +                case $withval in
-+                ''|yes) HOMEETC=/usr/local/pgsql;;
++                ''|yes) HOMEETC=/usr/local;;
 +		shared)	HOMEETC=${prefix};;
 +                *)      HOMEETC=$withval;;
 +                esac
