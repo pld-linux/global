@@ -2,12 +2,11 @@
 # Conditional build:
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
-#				# (btw, home-etc is supported here by profile.d hooks)
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.6
-Release:	4
+Release:	5
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
@@ -210,24 +209,15 @@ xemacs -batch -vanilla -f batch-byte-compile \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
 find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
 
-# /etc/profile.d hooks for globash
-# note: naming convention home-etc_hook-* makes us sure that
-#       the scriptlet will occur _after_ home-etc main scriptlet
-%if %{with home_etc}
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-globash.sh
-alias globash='GLOBASH_HOME="\$HOME_ETC" /bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
-EOF
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-globash.csh
-alias globash 'setenv GLOBASH_HOME = "\$HOME_ETC" ; /bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
-EOF
-%else
+# /etc/profile.d/*.sh hook for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
-alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+alias globash='%{?with_home_etc:GLOBASH_HOME="\$HOME_ETC" }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
+
+# /etc/profile.d/*.csh hook for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
-alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
-%endif
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
