@@ -8,7 +8,7 @@ Group:		Development/Tools
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Version:	4.6
-Release:	1
+Release:	2
 URL:		http://www.gnu.org/software/global/
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
 # Source0-md5:	513418bc88a7c0051992b5345bae10bc
@@ -198,9 +198,7 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 cp gtags.pl $RPM_BUILD_ROOT%{_bindir}
 
 # globash
-echo '#! /bin/bash' > globash
-cat globash.rc >> globash
-cp globash $RPM_BUILD_ROOT%{_bindir}
+cp globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
 
 # default config
 cp gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
@@ -213,13 +211,23 @@ xemacs -batch -vanilla -f batch-byte-compile \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
 find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
 
+# /etc/profile.d hooks for globash
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
+alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+EOF
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
+alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+EOF
+
 # /etc/profile.d hooks for home-etc support
+# note: naming convention home-etc_hook-* it makes us sure that
+#       the scriptlet will occur _after_ home-etc main scriptlet
 %if %{with home_etc}
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc-hook-global.sh
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-global.sh
 GTAGSCONF="\$HOME_ETC/.globalrc"
 export GTAGSCONF
 EOF
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc-hook-global.csh
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-global.csh
 set GTAGSCONF = "\$HOME_ETC/.globalrc"
 setenv GTAGSCONF
 EOF
@@ -256,7 +264,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files globash
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/globash
+%attr(755,root,root) %config /etc/profile.d/*
+%config %{_sysconfdir}/gtags/globash.rc
 
 %files -n xemacs-gtags-mode-pkg
 %defattr(644,root,root,755)
