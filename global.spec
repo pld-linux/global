@@ -24,6 +24,7 @@ BuildRequires:	texinfo
 BuildRequires:	xemacs
 Requires:	coreutils
 Requires:	findutils
+Requires:	id-utils
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
