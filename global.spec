@@ -7,7 +7,7 @@ Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		Development/Tools
 Source0:	http://tamacom.com/%{name}/%{name}-%{version}.tar.gz
@@ -27,6 +27,7 @@ BuildRequires:	texinfo
 Requires:	coreutils
 Requires:	findutils
 Requires:	id-utils
+Requires:	setup >= 2.4.6-2
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -247,15 +248,16 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_vimdatadir}/plugin \
 	$RPM_BUILD_ROOT%{_infodir} \
 	$RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} \
-	$RPM_BUILD_ROOT/etc/profile.d
+	$RPM_BUILD_ROOT/etc/profile.d \
+	$RPM_BUILD_ROOT/etc/shrc.d \
 
-# /etc/profile.d/*.sh hook for globash
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
+# /etc/shrc.d/*.sh hook for globash
+cat  << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.sh
 alias globash='%{?with_home_etc:GLOBASH_HOME="\$HOME_ETC" }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
-# /etc/profile.d/*.csh hook for globash
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
+# /etc/shrc.d/*.csh hook for globash
+cat  << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.csh
 alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
@@ -327,7 +329,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files globash
 %defattr(644,root,root,755)
-%attr(755,root,root) %config /etc/profile.d/globash*
+%attr(755,root,root) %config /etc/shrc.d/globash*
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/gtags/globash.rc
 
 %if %{with xemacs}
