@@ -1,16 +1,20 @@
 #
 # Conditional build:
+%bcond_without	xemacs		# without xemacs subpackage
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.6.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	6430ca736a74a734b10201d28fe0a64a
+#Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
+Source1:	gtags.vim
+# Source1-md5:	d97027efcd44458bd7fbd4b255f620f1
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
 Patch30:	%{name}-home_etc.patch
@@ -19,15 +23,20 @@ URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	texinfo
+%{?with_xemacs:BuildRequires:	xemacs}
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 %{?with_home_etc:BuildRequires:	home-etc-devel}
-BuildRequires:	xemacs
 Requires:	coreutils
 Requires:	findutils
-#Requires:	id-utils
+Requires:	id-utils
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# definitions useful for vim-global-tags subpackage
+%define vimver		6.2
+%define	vimnver		6.3
+%define vimepoch	4
 
 %description
 GNU GLOBAL is a source code tag system that works the same way across
@@ -38,13 +47,12 @@ project containing many subdirectories, many general, main()-type
 functions. It allows you to create one tags container for a big code
 tree.
 %if %{with pgsql}
-Tagging information may be keeped in the traditional db files, or shared
+Tagging information may be keept in the traditional db files, or shared
 using the PostgreSQL database.
 %endif
-
 You can also find some subpackages, containing support for additional
-GLOBAL's features, and for compliance with common code editors (symbols' completion,
-jumping).
+GLOBAL's features, and for compliance with common code editors
+(symbols' completion, jumping).
 
 %description -l pl
 GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
@@ -145,6 +153,7 @@ dope³nianie nazw w styly edytora Emacs, automatyczne wywo³ywanie
 edytorów lub przegl±darek, mechanizm wyró¿niania znaczników, oraz
 mechanizm ciasteczek pomagaj±cy zarz±dzaæ katalogami.
 
+%if %{with xemacs}
 %package -n xemacs-gtags-mode-pkg
 Summary:	XEmacs mode for the GNU GLOBAL source tag system
 Summary(pl):	Tryb systemu list odwo³añ GNU GLOBAL dla edytora XEmacs
@@ -165,6 +174,32 @@ GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
 kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
+%endif
+
+%define	vimshv		%(echo %{vimver} | tr -d .)
+%define	_vimdatadir	%{_datadir}/vim/vim%{vimshv}
+
+%package -n vim-global-tags
+Summary:	ViM editor plugin for GNU GLOBAL source tag system
+Summary(pl):	wtyczka dla edytora ViM do systemu odwo³añ GNU GLOBAL
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	vim >= %{vimepoch}:%{vimver}
+Conflicts:	vim >= %{vimepoch}:%{vimnver}
+
+%description -n vim-global-tags
+GNU GLOBAL is a source code tag system that works the same way across
+diverse environments. It supports C, C++, Yacc, Java, PHP and
+assembler source code.
+
+This package allows users to use GLOBAL tag system in ViM editor.
+
+%description -n vim-global-tags -l pl
+GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
+kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+
+Ten pakiet pozwala u¿ytkownikom na u¿ywanie systemu znaczników i
+odwo³añ GLOBAL w edytorze ViM.
 
 %package -n less-global-tags
 Summary:	less pager's helper for GNU GLOBAL source tag system
@@ -211,7 +246,11 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/gtags \
 	$RPM_BUILD_ROOT%{_mandir}/man1 \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags \
+	$RPM_BUILD_ROOT%{_vimplugindir} \
 	$RPM_BUILD_ROOT/etc/profile.d
+
+# vim support
+install %{SOURCE1} $RPM_BUILD_ROOT%{_vimplugindir}
 
 # perl wrapper
 cp gtags.pl $RPM_BUILD_ROOT%{_bindir}
@@ -223,12 +262,14 @@ cp globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
 cp gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
 
 # emacs support
+%if %{with xemacs}
 cp gtags.el $RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
 xemacs -batch -no-autoloads -l autoload -f batch-update-directory \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
 xemacs -batch -vanilla -f batch-byte-compile \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
 find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
+%endif
 
 # /etc/profile.d/*.sh hook for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
@@ -240,7 +281,7 @@ cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
 alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
-# /etc/profile.d/*sh hooks for less-global
+# /etc/profile.d/*sh hooks for less-global-tags
 echo 'LESSGLOBALTAGS="global"'	     > $RPM_BUILD_ROOT/etc/profile.d/less-global.sh
 echo 'export LESSGLOBALTAGS'	    >> $RPM_BUILD_ROOT/etc/profile.d/less-global.sh
 echo 'setenv LESSGLOBALTAGS global'  > $RPM_BUILD_ROOT/etc/profile.d/less-global.csh
@@ -278,11 +319,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %config /etc/profile.d/globash*
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/gtags/globash.rc
 
+%if %{with xemacs}
 %files -n xemacs-gtags-mode-pkg
 %defattr(644,root,root,755)
 %dir %{_datadir}/xemacs-packages/lisp/*
 %{_datadir}/xemacs-packages/lisp/*/*.el*
+%endif
 
 %files -n less-global-tags
 %defattr(644,root,root,755)
 %attr(755,root,root) %config /etc/profile.d/less-global*
+
+%files -n vim-global-tags
+%defattr(644,root,root,755)
+%{_vimdatadir}/plugin/*
