@@ -246,11 +246,11 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/gtags \
 	$RPM_BUILD_ROOT%{_mandir}/man1 \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags \
-	$RPM_BUILD_ROOT%{_vimdatadir} \
+	$RPM_BUILD_ROOT%{_vimdatadir}/plugin \
 	$RPM_BUILD_ROOT/etc/profile.d
 
 # vim support
-install %{SOURCE1} $RPM_BUILD_ROOT%{_vimdatadir}
+install %{SOURCE1} $RPM_BUILD_ROOT%{_vimdatadir}/plugin
 
 # perl wrapper
 cp gtags.pl $RPM_BUILD_ROOT%{_bindir}
