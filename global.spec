@@ -9,7 +9,7 @@ Version:	4.6.1
 Release:	1
 License:	GPL
 Group:		Development/Tools
-Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
 # Source0-md5:	6430ca736a74a734b10201d28fe0a64a
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
