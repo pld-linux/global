@@ -6,15 +6,13 @@
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
-Version:	4.6.1
-Release:	4
+Version:	4.7
+Release:	1
 License:	GPL
 Group:		Development/Tools
-Source0:	ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.gz
-# Source0-md5:	6430ca736a74a734b10201d28fe0a64a
+Source0:	http://tamacom.com/%{name}/%{name}-%{version}.tar.gz
+# Source0-md5:	1662792366fa44adec3577b2d7ee33a4
 #Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
-Source1:	gtags.vim
-# Source1-md5:	d97027efcd44458bd7fbd4b255f620f1
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
 Patch30:	%{name}-home_etc.patch
@@ -245,31 +243,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/gtags \
 	$RPM_BUILD_ROOT%{_mandir}/man1 \
-	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags \
+	$RPM_BUILD_ROOT%{_datadir}/{xemacs-packages/lisp/gtags,gtags} \
 	$RPM_BUILD_ROOT%{_vimdatadir}/plugin \
+	$RPM_BUILD_ROOT%{_infodir} \
+	$RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} \
 	$RPM_BUILD_ROOT/etc/profile.d
-
-# vim support
-install %{SOURCE1} $RPM_BUILD_ROOT%{_vimdatadir}/plugin
-
-# perl wrapper
-cp gtags.pl $RPM_BUILD_ROOT%{_bindir}
-
-# globash
-cp globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
-
-# default config
-cp gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
-
-# emacs support
-%if %{with xemacs}
-cp gtags.el $RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
-xemacs -batch -no-autoloads -l autoload -f batch-update-directory \
-	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
-xemacs -batch -vanilla -f batch-byte-compile \
-	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
-find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
-%endif
 
 # /etc/profile.d/*.sh hook for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
@@ -289,12 +267,45 @@ echo 'setenv LESSGLOBALTAGS global'  > $RPM_BUILD_ROOT/etc/profile.d/less-global
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# documentation and other stuff
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/{AUTHORS,NEWS,COPYING,ChangeLog,FAQ,INSTALL,LICENSE,README,THANKS} $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+rm -f $RPM_BUILD_ROOT%{_datadir}/gtags/{dir.gz,nvi*gtags.diff}
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+
+# vim support
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.vim $RPM_BUILD_ROOT%{_vimdatadir}/plugin
+
+# perl wrapper
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.pl $RPM_BUILD_ROOT%{_bindir}
+
+# globash
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
+
+# default config
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
+
+# emacs support
+%if %{with xemacs}
+mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.el $RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
+xemacs -batch -no-autoloads -l autoload -f batch-update-directory \
+	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
+xemacs -batch -vanilla -f batch-byte-compile \
+	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
+find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
+
+%postun
+[ ! -x /usr/sbin/fix-info-dir ] || /usr/sbin/fix-info-dir -c %{_infodir} >/dev/null 2>&1
+
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog FAQ LICENSE NEWS README THANKS
+%doc %{_docdir}/%{name}-%{version}/*
 %attr(755,root,root) %{_bindir}/g*tags
 %attr(755,root,root) %{_bindir}/global
 %dir %{_sysconfdir}/gtags
