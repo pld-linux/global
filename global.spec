@@ -8,12 +8,13 @@ Group:		Development/Tools
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Version:	4.6
-Release:	2
+Release:	3
 URL:		http://www.gnu.org/software/global/
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
 # Source0-md5:	513418bc88a7c0051992b5345bae10bc
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-pgsql-shared.patch
+Patch30:	%{name}-globash-altercfg.patch
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -169,6 +170,7 @@ Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 %setup -q
 %patch10 -p1
 %patch20 -p1
+%patch30 -p1
 
 %build
 %{__aclocal}
@@ -213,14 +215,18 @@ find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -
 
 # /etc/profile.d hooks for globash
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.sh
-alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
-EOF
-cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
+GLOBASH_HOME="\$HOME_ETC"
+export GLOBASH_HOME
 alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+EOF
+set GLOBASH_HOME = "\$HOME_ETC"
+setenv GLOBASH_HOME
+cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/globash.csh
+alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
 # /etc/profile.d hooks for home-etc support
-# note: naming convention home-etc_hook-* it makes us sure that
+# note: naming convention home-etc_hook-* makes us sure that
 #       the scriptlet will occur _after_ home-etc main scriptlet
 %if %{with home_etc}
 cat  << EOF > $RPM_BUILD_ROOT/etc/profile.d/home-etc_hook-global.sh

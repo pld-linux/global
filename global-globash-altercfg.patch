@@ -1,0 +1,39 @@
+diff -Nur global-4.6.orig/globash.rc global-4.6/globash.rc
+--- global-4.6.orig/globash.rc	2003-07-02 05:31:16.000000000 +0200
++++ global-4.6/globash.rc	2004-02-20 02:50:25.000000000 +0100
+@@ -36,7 +36,14 @@
+ # Global variables and utilities.
+ ###########################################################################
+ ### Working directory
+-GHOME=$HOME/.globash
++if [ -n "$GLOBASH_HOME" ]; then
++	GHOME=$HOME/.globash
++else
++	GHOME=$GLOBASH_HOME/.globash
++fi
++GHOMECF="$GHOME"rc
++export GHOME GHOMECF
++
+ if [ ! -d $GHOME ]; then
+ 	echo
+ 	echo "GloBash --- Global facility for Bash"
+@@ -75,7 +82,7 @@
+ __gtags_clean() {
+ 	for d in $XREF $STACK $MARKER $TMP1; do
+ 		case $d in
+-		$HOME/.globash/*-$$) rm -f $d;;
++		$GHOME/*-$$) rm -f $d;;
+ 		esac
+ 	done
+ }
+@@ -763,8 +770,8 @@
+ # Run private command script.
+ #
+ gtags_aliases=1
+-if [ -f $HOME/.globashrc ]; then
+-	source $HOME/.globashrc
++if [ -f $GHOMECF ]; then
++	source $GHOMECF
+ fi
+ #
+ # Aliases
