@@ -1,29 +1,31 @@
+#
 # Conditional build:
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
 #				# (btw, home-etc is supported here by profile.d hooks)
-Name:		global
-License:	GPL
-Group:		Development/Tools
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
+Name:		global
 Version:	4.6
 Release:	3
-URL:		http://www.gnu.org/software/global/
+License:	GPL
+Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
 # Source0-md5:	513418bc88a7c0051992b5345bae10bc
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-pgsql-shared.patch
 Patch30:	%{name}-globash-altercfg.patch
-Provides:	gtags-%{version}-%{release}
-Provides:	htags-%{version}-%{release}
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	xemacs
 Requires:	coreutils
 Requires:	findutils
 %{?with_home_etc:Requires:	home-etc >= 1.0.8}
+Provides:	gtags-%{version}-%{release}
+Provides:	htags-%{version}-%{release}
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 GNU GLOBAL is a source code tag system that works the same way across
@@ -65,10 +67,10 @@ ze niektórymi znanymi edytorami kodu (dope³nianie nazw symboli, przeskakiwanie).
 Summary:	GNU GLOBAL - programs for making hypertext from source code
 Summary(pl):	GNU GLOBAL - programy produkuj±ce hypertext z kodów ¼ród³owych
 Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	perl-base >= 5.005
 Provides:	gozilla-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
-Requires:	%{name} = %{version}-%{release}
-Requires:	perl >= 5.005
 
 %description htags
 GNU GLOBAL is a source code tag system that works the same way across
@@ -95,9 +97,9 @@ CVS u³atwiaj±c nawigacjê w kodach poprzez WWW.
 Summary:	GNU GLOBAL - gtags wrapper for tools which use Perl
 Summary(pl):	GNU GLOBAL - program pomocniczy dla narzêdzi u¿ywaj±cych Perl
 Group:		Development/Tools
-Provides:	gtags-perl-wrapper-%{version}-%{release}
 Requires:	%{name} = %{version}-%{release}
-Requires:	perl >= 5.005
+Requires:	perl-base >= 5.005
+Provides:	gtags-perl-wrapper-%{version}-%{release}
 
 %description gtags-perl-wrapper
 GNU GLOBAL is a source code tag system that works the same way across
@@ -118,9 +120,9 @@ systemu niektórym narzêdziom i edytorom.
 Summary:	GNU GLOBAL - Bash customization to walk though the source trees
 Summary(pl):	GNU GLOBAL - usprawnienie dla Bash do poruszania siê po drzewach ¼róde³
 Group:		Development/Tools
-Provides:	globash-%{version}-%{release}
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash >= 2.05
+Provides:	globash-%{version}-%{release}
 
 %description globash
 GNU GLOBAL is a source code tag system that works the same way across
@@ -148,9 +150,8 @@ mechanizm ciasteczek pomagaj±cy zarz±dzaæ katalogami.
 Summary:	XEmacs mode for the GNU GLOBAL source tag system
 Summary(pl):	Tryb systemu list odwo³añ GNU GLOBAL dla edytora XEmacs
 Group:		Development/Tools
-Requires:	xemacs
 Requires:	%{name} = %{version}-%{release}
-BuildRequires:	xemacs
+Requires:	xemacs
 
 %description -n xemacs-gtags-mode-pkg
 GNU GLOBAL is a source code tag system that works the same way across
@@ -178,14 +179,8 @@ Ten pakiet pozwala zintegrowaæ system GLOBAL z edytorem XEmacs.
 %{__autoheader}
 %{__automake}
 %configure \
-    %{?with_pgsql:--with-postgres=%{_prefix}} \
-    %{?with_home_etc:--with-home-etc} \
-    --prefix=%{_prefix} \
-    --bindir=%{_bindir} \
-    --datadir=%{_datadir} \
-    --mandir=%{_mandir} \
-    --sysconfdir=%{_sysconfdir} \
-    --infodir=%{_infodir}
+	%{?with_pgsql:--with-postgres=%{_prefix}} \
+	%{?with_home_etc:--with-home-etc}
 %{__make}
 
 %install
@@ -251,22 +246,22 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog FAQ LICENSE NEWS README THANKS
-%doc %{_mandir}/man1/global*
-%doc %{_mandir}/man1/g*tags*
-%doc %{_infodir}/*.info*
-%dir %{_sysconfdir}/gtags
+%doc AUTHORS ChangeLog FAQ LICENSE NEWS README THANKS
 %attr(755,root,root) %{_bindir}/g*tags
 %attr(755,root,root) %{_bindir}/global
-%attr(755,root,root) %config /etc/profile.d/*
+%attr(755,root,root) %config(noreplace) %verify(not size mtime md5) /etc/profile.d/*
+%dir %{_sysconfdir}/gtags
 %config(noreplace,missingok) %verify(not md5 size mtime) %{_sysconfdir}/gtags/*
+%{_mandir}/man1/global*
+%{_mandir}/man1/g*tags*
+%{_infodir}/*.info*
 
 %files htags
 %defattr(644,root,root,755)
-%doc %{_mandir}/man1/htags*
-%doc %{_mandir}/man1/gozilla*
 %attr(755,root,root) %{_bindir}/htags
 %attr(755,root,root) %{_bindir}/gozilla
+%{_mandir}/man1/htags*
+%{_mandir}/man1/gozilla*
 
 %files gtags-perl-wrapper
 %defattr(644,root,root,755)
@@ -275,7 +270,7 @@ rm -rf $RPM_BUILD_ROOT
 %files globash
 %defattr(644,root,root,755)
 %attr(755,root,root) %config /etc/profile.d/*
-%config %{_sysconfdir}/gtags/globash.rc
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/gtags/globash.rc
 
 %files -n xemacs-gtags-mode-pkg
 %defattr(644,root,root,755)
