@@ -1,6 +1,6 @@
-diff -Nur global-4.6.orig/acinclude.m4 global-4.6/acinclude.m4
---- global-4.6.orig/acinclude.m4	2003-07-02 05:31:16.000000000 +0200
-+++ global-4.6/acinclude.m4	2004-02-19 20:31:45.000000000 +0100
+diff -Nur global-4.6.1.orig/acinclude.m4 global-4.6.1/acinclude.m4
+--- global-4.6.1.orig/acinclude.m4	2003-10-03 12:15:29.000000000 +0200
++++ global-4.6.1/acinclude.m4	2004-02-20 17:35:21.000000000 +0100
 @@ -18,7 +18,7 @@
  # along with this program; if not, write to the Free Software
  # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.

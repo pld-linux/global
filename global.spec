@@ -5,12 +5,12 @@
 Summary:	GNU GLOBAL - Common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
-Version:	4.6
-Release:	5
+Version:	4.6.1
+Release:	1
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
-# Source0-md5:	513418bc88a7c0051992b5345bae10bc
+# Source0-md5:	6430ca736a74a734b10201d28fe0a64a
 Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
 Patch30:	%{name}-home_etc.patch
