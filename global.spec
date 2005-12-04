@@ -20,10 +20,10 @@ Patch40:	%{name}-globash-altercfg.patch
 URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
+%{?with_home_etc:BuildRequires:	home-etc-devel}
+%{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	texinfo
 %{?with_xemacs:BuildRequires:	xemacs}
-%{?with_pgsql:BuildRequires:	postgresql-devel}
-%{?with_home_etc:BuildRequires:	home-etc-devel}
 Requires:	coreutils
 Requires:	findutils
 Requires:	id-utils
@@ -310,7 +310,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/g*tags
 %attr(755,root,root) %{_bindir}/global
 %dir %{_sysconfdir}/gtags
-%config(noreplace,missingok) %verify(not md5 size mtime) %{_sysconfdir}/gtags/gtags.conf
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/gtags/gtags.conf
 %{_mandir}/man1/global*
 %{_mandir}/man1/g*tags*
 %{_infodir}/*.info*
@@ -328,8 +328,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files globash
 %defattr(644,root,root,755)
-%attr(755,root,root) %config /etc/shrc.d/globash*
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/gtags/globash.rc
+%attr(755,root,root) %config %{_sysconfdir}/shrc.d/globash*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gtags/globash.rc
 
 %if %{with xemacs}
 %files -n xemacs-gtags-mode-pkg
