@@ -50,11 +50,23 @@ functions. It allows you to create one tags container for a big code
 tree.
 %if %{with pgsql}
 Tagging information may be keept in the traditional db files, or shared
-using the PostgreSQL database.
+GNU GLOBAL is a source code tag system that works the same way across
+diverse environments. It supports C, C++, Yacc, Java, PHP and
+assembler source code. You can locate the specified function or method
+in source files and move there easily. It is useful to hack a large
+project containing many subdirectories, many general, main()-type
+functions. It allows you to create one tags container for a big code
+tree. using the PostgreSQL database.
 %endif
 You can also find some subpackages, containing support for additional
-GLOBAL's features, and for compliance with common code editors
-(symbols' completion, jumping).
+GNU GLOBAL is a source code tag system that works the same way across
+diverse environments. It supports C, C++, Yacc, Java, PHP and
+assembler source code. You can locate the specified function or method
+in source files and move there easily. It is useful to hack a large
+project containing many subdirectories, many general, main()-type
+functions. It allows you to create one tags container for a big code
+tree. using the PostgreSQL database. GLOBAL's features, and for
+compliance with common code editors (symbols' completion, jumping).
 
 %description -l pl
 GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
@@ -66,12 +78,26 @@ podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala on
 utworzyæ jeden kontener ze znacznikami dla du¿ego drzewa kodu.
 %if %{with pgsql}
 Informacje o znacznikach mog± byæ przechowywane w postaci plików db,
-lub te¿ wspó³dzielone przy pomocy bazy danych PostgreSQL.
+GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
+kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+Umo¿liwia on odszukanie podanej funkcji lub metody w plikach
+¼ród³owych i przeniesienie siê do niej w ³atwy sposób. Narzêdzie to
+jest przydatne do d³ubania w du¿ych projektach, zawieraj±cych mnóstwo
+podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala on
+utworzyæ jeden kontener ze znacznikami dla du¿ego drzewa kodu. lub te¿
+wspó³dzielone przy pomocy bazy danych PostgreSQL.
 %endif
 Mo¿na tak¿e znale¼æ kilka podpakietów, które zawieraj± wsparcie dla
-dodatkowych mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê z
-niektórymi znanymi edytorami kodu (dope³nianie nazw symboli,
-przeskakiwanie).
+GNU GLOBAL jest powszechnym systemem generowania list odwo³añ dla
+kodów ¼ród³owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+Umo¿liwia on odszukanie podanej funkcji lub metody w plikach
+¼ród³owych i przeniesienie siê do niej w ³atwy sposób. Narzêdzie to
+jest przydatne do d³ubania w du¿ych projektach, zawieraj±cych mnóstwo
+podkatalogów, wiele funkcji g³ównych w stylu main(). Pozwala on
+utworzyæ jeden kontener ze znacznikami dla du¿ego drzewa kodu. lub te¿
+wspó³dzielone przy pomocy bazy danych PostgreSQL. dodatkowych
+mechanizmów GLOBAL, a tak¿e pozwalaj± na wspó³pracê z niektórymi
+znanymi edytorami kodu (dope³nianie nazw symboli, przeskakiwanie).
 
 %package htags
 Summary:	GNU GLOBAL - programs for making hypertext from source code
