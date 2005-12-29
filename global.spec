@@ -7,7 +7,7 @@ Summary:	GNU GLOBAL - common source code tag system
 Summary(pl):	GNU GLOBAL - system list odwo³añ powszechnego u¿ytku
 Name:		global
 Version:	4.7
-Release:	4
+Release:	5
 License:	GPL
 Group:		Development/Tools
 Source0:	ftp://ftp.gnu.org/pub/gnu/global/%{name}-%{version}.tar.gz
@@ -33,12 +33,7 @@ Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # definitions useful for vim-global-tags subpackage
-%define vimver		6.3
-%define	vimnver		6.4
-%define vimepoch	4
-
-%define	vimshv		%(echo %{vimver} | tr -d .)
-%define	_vimdatadir	%{_datadir}/vim/vim%{vimshv}
+%define		_vimdatadir	%{_datadir}/vim/vimfiles
 
 %description
 GNU GLOBAL is a source code tag system that works the same way across
@@ -208,8 +203,7 @@ Summary:	ViM editor plugin for GNU GLOBAL source tag system
 Summary(pl):	wtyczka dla edytora ViM do systemu odwo³añ GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-Requires:	vim >= %{vimepoch}:%{vimver}
-Conflicts:	vim >= %{vimepoch}:%{vimnver}
+Requires:	vim >= 4:6.3.058-3
 
 %description -n vim-global-tags
 GNU GLOBAL is a source code tag system that works the same way across
