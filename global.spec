@@ -4,7 +4,7 @@
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
 Summary:	GNU GLOBAL - common source code tag system
-Summary(pl):	GNU GLOBAL - system list odwo≥aÒ powszechnego uøytku
+Summary(pl.UTF-8):   GNU GLOBAL - system list odwo≈Ça≈Ñ powszechnego u≈ºytku
 Name:		global
 Version:	4.7
 Release:	6
@@ -63,40 +63,40 @@ functions. It allows you to create one tags container for a big code
 tree. using the PostgreSQL database. GLOBAL's features, and for
 compliance with common code editors (symbols' completion, jumping).
 
-%description -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Umoøliwia on odszukanie podanej funkcji lub metody w plikach
-ºrÛd≥owych i przeniesienie siÍ do niej w ≥atwy sposÛb. NarzÍdzie to
-jest przydatne do d≥ubania w duøych projektach, zawieraj±cych mnÛstwo
-podkatalogÛw, wiele funkcji g≥Ûwnych w stylu main(). Pozwala on
-utworzyÊ jeden kontener ze znacznikami dla duøego drzewa kodu.
+%description -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+Umo≈ºliwia on odszukanie podanej funkcji lub metody w plikach
+≈∫r√≥d≈Çowych i przeniesienie siƒô do niej w ≈Çatwy spos√≥b. Narzƒôdzie to
+jest przydatne do d≈Çubania w du≈ºych projektach, zawierajƒÖcych mn√≥stwo
+podkatalog√≥w, wiele funkcji g≈Ç√≥wnych w stylu main(). Pozwala on
+utworzyƒá jeden kontener ze znacznikami dla du≈ºego drzewa kodu.
 %if %{with pgsql}
-Informacje o znacznikach mog± byÊ przechowywane w postaci plikÛw db,
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Umoøliwia on odszukanie podanej funkcji lub metody w plikach
-ºrÛd≥owych i przeniesienie siÍ do niej w ≥atwy sposÛb. NarzÍdzie to
-jest przydatne do d≥ubania w duøych projektach, zawieraj±cych mnÛstwo
-podkatalogÛw, wiele funkcji g≥Ûwnych w stylu main(). Pozwala on
-utworzyÊ jeden kontener ze znacznikami dla duøego drzewa kodu. lub teø
-wspÛ≥dzielone przy pomocy bazy danych PostgreSQL.
+Informacje o znacznikach mogƒÖ byƒá przechowywane w postaci plik√≥w db,
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+Umo≈ºliwia on odszukanie podanej funkcji lub metody w plikach
+≈∫r√≥d≈Çowych i przeniesienie siƒô do niej w ≈Çatwy spos√≥b. Narzƒôdzie to
+jest przydatne do d≈Çubania w du≈ºych projektach, zawierajƒÖcych mn√≥stwo
+podkatalog√≥w, wiele funkcji g≈Ç√≥wnych w stylu main(). Pozwala on
+utworzyƒá jeden kontener ze znacznikami dla du≈ºego drzewa kodu. lub te≈º
+wsp√≥≈Çdzielone przy pomocy bazy danych PostgreSQL.
 %endif
-Moøna takøe znaleºÊ kilka podpakietÛw, ktÛre zawieraj± wsparcie dla
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Umoøliwia on odszukanie podanej funkcji lub metody w plikach
-ºrÛd≥owych i przeniesienie siÍ do niej w ≥atwy sposÛb. NarzÍdzie to
-jest przydatne do d≥ubania w duøych projektach, zawieraj±cych mnÛstwo
-podkatalogÛw, wiele funkcji g≥Ûwnych w stylu main(). Pozwala on
-utworzyÊ jeden kontener ze znacznikami dla duøego drzewa kodu. lub teø
-wspÛ≥dzielone przy pomocy bazy danych PostgreSQL. dodatkowych
-mechanizmÛw GLOBAL, a takøe pozwalaj± na wspÛ≥pracÍ z niektÛrymi
-znanymi edytorami kodu (dope≥nianie nazw symboli, przeskakiwanie).
+Mo≈ºna tak≈ºe znale≈∫ƒá kilka podpakiet√≥w, kt√≥re zawierajƒÖ wsparcie dla
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+Umo≈ºliwia on odszukanie podanej funkcji lub metody w plikach
+≈∫r√≥d≈Çowych i przeniesienie siƒô do niej w ≈Çatwy spos√≥b. Narzƒôdzie to
+jest przydatne do d≈Çubania w du≈ºych projektach, zawierajƒÖcych mn√≥stwo
+podkatalog√≥w, wiele funkcji g≈Ç√≥wnych w stylu main(). Pozwala on
+utworzyƒá jeden kontener ze znacznikami dla du≈ºego drzewa kodu. lub te≈º
+wsp√≥≈Çdzielone przy pomocy bazy danych PostgreSQL. dodatkowych
+mechanizm√≥w GLOBAL, a tak≈ºe pozwalajƒÖ na wsp√≥≈Çpracƒô z niekt√≥rymi
+znanymi edytorami kodu (dope≈Çnianie nazw symboli, przeskakiwanie).
 
 %package htags
 Summary:	GNU GLOBAL - programs for making hypertext from source code
-Summary(pl):	GNU GLOBAL - programy produkuj±ce hypertext z kodÛw ºrÛd≥owych
+Summary(pl.UTF-8):   GNU GLOBAL - programy produkujƒÖce hypertext z kod√≥w ≈∫r√≥d≈Çowych
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
@@ -114,19 +114,19 @@ source code in an elegant way. Htags can also work with a CVS
 repository, which makes it more easy to navigate though the code over
 the Web.
 
-%description htags -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description htags -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Htags jest narzÍdziem generuj±cym hypertext z kodÛw. Pakiet ten
-zawiera takøe program wyskakuj±cy o nazwie gozilla, ktÛry zmusza
-przegl±darki bazuj±ce na Mozilla, aby wy∂wietla≥y kod ºrÛd≥owy w
-elegancki sposÛb. Htags potrafi rÛwnieø wspÛ≥pracowaÊ z repozytorium
-CVS u≥atwiaj±c nawigacjÍ w kodach poprzez WWW.
+Htags jest narzƒôdziem generujƒÖcym hypertext z kod√≥w. Pakiet ten
+zawiera tak≈ºe program wyskakujƒÖcy o nazwie gozilla, kt√≥ry zmusza
+przeglƒÖdarki bazujƒÖce na Mozilla, aby wy≈õwietla≈Çy kod ≈∫r√≥d≈Çowy w
+elegancki spos√≥b. Htags potrafi r√≥wnie≈º wsp√≥≈Çpracowaƒá z repozytorium
+CVS u≈ÇatwiajƒÖc nawigacjƒô w kodach poprzez WWW.
 
 %package gtags-perl-wrapper
 Summary:	GNU GLOBAL - gtags wrapper for tools which use Perl
-Summary(pl):	GNU GLOBAL - program pomocniczy dla narzÍdzi uøywaj±cych Perl
+Summary(pl.UTF-8):   GNU GLOBAL - program pomocniczy dla narzƒôdzi u≈ºywajƒÖcych Perl
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
@@ -140,16 +140,16 @@ assembler source code.
 This package contains simple Perl wrapper, which allows to use the
 system for some tools and editors.
 
-%description gtags-perl-wrapper -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description gtags-perl-wrapper -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet zawiera program pomocniczy, ktÛry pozwala uøywaÊ tego
-systemu niektÛrym narzÍdziom i edytorom.
+Ten pakiet zawiera program pomocniczy, kt√≥ry pozwala u≈ºywaƒá tego
+systemu niekt√≥rym narzƒôdziom i edytorom.
 
 %package globash
 Summary:	GNU GLOBAL - Bash customization to walk though the source trees
-Summary(pl):	GNU GLOBAL - usprawnienie dla Bash do poruszania siÍ po drzewach ºrÛde≥
+Summary(pl.UTF-8):   GNU GLOBAL - usprawnienie dla Bash do poruszania siƒô po drzewach ≈∫r√≥de≈Ç
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash >= 2.05
@@ -166,20 +166,20 @@ stack, Emacs-like tag name completion, editor or viewer automatic
 invocation, tag mark facility, and a cookie facility for managing
 directories.
 
-%description globash -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description globash -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet pozwala wywo≥ywaÊ odpowiednio przystosowan± wersjÍ pow≥oki
-Bash z udogodnieniami, ktÛre czyni± nawigowanie po drzewku ºrÛde≥
-rzecz± ≥atw±. Do tych udogodnieÒ naleø±: stos znacznikÛw w stylu Vi,
-dope≥nianie nazw w stylu edytora Emacs, automatyczne wywo≥ywanie
-edytorÛw lub przegl±darek, mechanizm wyrÛøniania znacznikÛw, oraz
-mechanizm ciasteczek pomagaj±cy zarz±dzaÊ katalogami.
+Ten pakiet pozwala wywo≈Çywaƒá odpowiednio przystosowanƒÖ wersjƒô pow≈Çoki
+Bash z udogodnieniami, kt√≥re czyniƒÖ nawigowanie po drzewku ≈∫r√≥de≈Ç
+rzeczƒÖ ≈ÇatwƒÖ. Do tych udogodnie≈Ñ nale≈ºƒÖ: stos znacznik√≥w w stylu Vi,
+dope≈Çnianie nazw w stylu edytora Emacs, automatyczne wywo≈Çywanie
+edytor√≥w lub przeglƒÖdarek, mechanizm wyr√≥≈ºniania znacznik√≥w, oraz
+mechanizm ciasteczek pomagajƒÖcy zarzƒÖdzaƒá katalogami.
 
 %package -n xemacs-gtags-mode-pkg
 Summary:	XEmacs mode for the GNU GLOBAL source tag system
-Summary(pl):	Tryb systemu list odwo≥aÒ GNU GLOBAL dla edytora XEmacs
+Summary(pl.UTF-8):   Tryb systemu list odwo≈Ça≈Ñ GNU GLOBAL dla edytora XEmacs
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	xemacs
@@ -192,15 +192,15 @@ assembler source code.
 This package allows to integrate the GLOBAL source tag system with the
 XEmacs editor.
 
-%description -n xemacs-gtags-mode-pkg -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description -n xemacs-gtags-mode-pkg -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet pozwala zintegrowaÊ system GLOBAL z edytorem XEmacs.
+Ten pakiet pozwala zintegrowaƒá system GLOBAL z edytorem XEmacs.
 
 %package -n vim-global-tags
 Summary:	ViM editor plugin for GNU GLOBAL source tag system
-Summary(pl):	wtyczka dla edytora ViM do systemu odwo≥aÒ GNU GLOBAL
+Summary(pl.UTF-8):   wtyczka dla edytora ViM do systemu odwo≈Ça≈Ñ GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	vim >= 4:6.3.058-3
@@ -212,16 +212,16 @@ assembler source code.
 
 This package allows users to use GLOBAL tag system in ViM editor.
 
-%description -n vim-global-tags -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description -n vim-global-tags -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet pozwala uøytkownikom na uøywanie systemu znacznikÛw i
-odwo≥aÒ GLOBAL w edytorze ViM.
+Ten pakiet pozwala u≈ºytkownikom na u≈ºywanie systemu znacznik√≥w i
+odwo≈Ça≈Ñ GLOBAL w edytorze ViM.
 
 %package -n less-global-tags
 Summary:	less pager's helper for GNU GLOBAL source tag system
-Summary(pl):	wsparcie dla polecenia less do systemu odwo≥aÒ GNU GLOBAL
+Summary(pl.UTF-8):   wsparcie dla polecenia less do systemu odwo≈Ça≈Ñ GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	xemacs
@@ -234,12 +234,12 @@ assembler source code.
 This package allows users to navigate through GLOBAL tags and
 references system using less pager.
 
-%description -n less-global-tags -l pl
-GNU GLOBAL jest powszechnym systemem generowania list odwo≥aÒ dla
-kodÛw ºrÛd≥owych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
+%description -n less-global-tags -l pl.UTF-8
+GNU GLOBAL jest powszechnym systemem generowania list odwo≈Ça≈Ñ dla
+kod√≥w ≈∫r√≥d≈Çowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet pozwala uøytkownikom na nawigacjÍ poprzez system znacznikÛw
-i odwo≥aÒ systemu GLOBAL uøywaj±c polecenia less.
+Ten pakiet pozwala u≈ºytkownikom na nawigacjƒô poprzez system znacznik√≥w
+i odwo≈Ça≈Ñ systemu GLOBAL u≈ºywajƒÖc polecenia less.
 
 %prep
 %setup -q
