@@ -4,7 +4,7 @@
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
 Summary:	GNU GLOBAL - common source code tag system
-Summary(pl.UTF-8):   GNU GLOBAL - system list odwołań powszechnego użytku
+Summary(pl.UTF-8):	GNU GLOBAL - system list odwołań powszechnego użytku
 Name:		global
 Version:	4.7
 Release:	6
@@ -96,7 +96,7 @@ znanymi edytorami kodu (dopełnianie nazw symboli, przeskakiwanie).
 
 %package htags
 Summary:	GNU GLOBAL - programs for making hypertext from source code
-Summary(pl.UTF-8):   GNU GLOBAL - programy produkujące hypertext z kodów źródłowych
+Summary(pl.UTF-8):	GNU GLOBAL - programy produkujące hypertext z kodów źródłowych
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
@@ -126,7 +126,7 @@ CVS ułatwiając nawigację w kodach poprzez WWW.
 
 %package gtags-perl-wrapper
 Summary:	GNU GLOBAL - gtags wrapper for tools which use Perl
-Summary(pl.UTF-8):   GNU GLOBAL - program pomocniczy dla narzędzi używających Perl
+Summary(pl.UTF-8):	GNU GLOBAL - program pomocniczy dla narzędzi używających Perl
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
@@ -149,7 +149,7 @@ systemu niektórym narzędziom i edytorom.
 
 %package globash
 Summary:	GNU GLOBAL - Bash customization to walk though the source trees
-Summary(pl.UTF-8):   GNU GLOBAL - usprawnienie dla Bash do poruszania się po drzewach źródeł
+Summary(pl.UTF-8):	GNU GLOBAL - usprawnienie dla Bash do poruszania się po drzewach źródeł
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash >= 2.05
@@ -179,7 +179,7 @@ mechanizm ciasteczek pomagający zarządzać katalogami.
 
 %package -n xemacs-gtags-mode-pkg
 Summary:	XEmacs mode for the GNU GLOBAL source tag system
-Summary(pl.UTF-8):   Tryb systemu list odwołań GNU GLOBAL dla edytora XEmacs
+Summary(pl.UTF-8):	Tryb systemu list odwołań GNU GLOBAL dla edytora XEmacs
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	xemacs
@@ -200,7 +200,7 @@ Ten pakiet pozwala zintegrować system GLOBAL z edytorem XEmacs.
 
 %package -n vim-global-tags
 Summary:	ViM editor plugin for GNU GLOBAL source tag system
-Summary(pl.UTF-8):   wtyczka dla edytora ViM do systemu odwołań GNU GLOBAL
+Summary(pl.UTF-8):	wtyczka dla edytora ViM do systemu odwołań GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	vim >= 4:6.3.058-3
@@ -221,7 +221,7 @@ odwołań GLOBAL w edytorze ViM.
 
 %package -n less-global-tags
 Summary:	less pager's helper for GNU GLOBAL source tag system
-Summary(pl.UTF-8):   wsparcie dla polecenia less do systemu odwołań GNU GLOBAL
+Summary(pl.UTF-8):	wsparcie dla polecenia less do systemu odwołań GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	xemacs
