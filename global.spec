@@ -3,6 +3,7 @@
 %bcond_without	xemacs		# without xemacs subpackage
 %bcond_without	pgsql		# without PostgreSQL support
 %bcond_without	home_etc	# don't use home_etc
+#
 Summary:	GNU GLOBAL - common source code tag system
 Summary(pl.UTF-8):	GNU GLOBAL - system list odwołań powszechnego użytku
 Name:		global
@@ -26,7 +27,7 @@ BuildRequires:	texinfo
 %{?with_xemacs:BuildRequires:	xemacs}
 Requires:	coreutils
 Requires:	findutils
-Requires:	id-utils
+Requires:	idutils
 Requires:	setup >= 2.4.6-2
 Provides:	gtags-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
