@@ -204,7 +204,8 @@ Summary:	ViM editor plugin for GNU GLOBAL source tag system
 Summary(pl.UTF-8):	wtyczka dla edytora ViM do systemu odwołań GNU GLOBAL
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-Requires:	vim >= 4:6.3.058-3
+# for _vimdatadir existence
+Requires:	vim-rt >= 4:6.3.058-3
 
 %description -n vim-global-tags
 GNU GLOBAL is a source code tag system that works the same way across
