@@ -1,27 +1,32 @@
-#
+# TODO
+# unpackaged:
+#%attr(755,root,root) %{_bindir}/globash
+#%attr(755,root,root) %{_bindir}/gtags-cscope
+#%{_libdir}/gtags/*.{so,la,a}
+#%{_datadir}/gtags/*
+#%{_mandir}/man1/globash.1*
+
 # Conditional build:
 %bcond_without	xemacs		# without xemacs subpackage
 %bcond_without	pgsql		# without PostgreSQL support
-%bcond_without	home_etc	# don't use home_etc
-#
+%bcond_without	home_etc	# use home_etc
+
 Summary:	GNU GLOBAL - common source code tag system
 Summary(pl.UTF-8):	GNU GLOBAL - system list odwołań powszechnego użytku
 Name:		global
-Version:	4.7
-Release:	6
-License:	GPL
+Version:	6.3.4
+Release:	0.1
+License:	GPLv2+ and BSD
 Group:		Development/Tools
-Source0:	ftp://ftp.gnu.org/pub/gnu/global/%{name}-%{version}.tar.gz
-# Source0-md5:	1662792366fa44adec3577b2d7ee33a4
+Source0:	http://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
+# Source0-md5:	06aee2306ac2113e6347043066679eea
 #Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
-Patch10:	%{name}-acinclude-fix.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
-Patch30:	%{name}-home_etc.patch
-Patch40:	%{name}-globash-altercfg.patch
 URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_home_etc:BuildRequires:	home-etc-devel}
+BuildRequires:	libtool
 %{?with_pgsql:BuildRequires:	postgresql-devel}
 BuildRequires:	texinfo
 %{?with_xemacs:BuildRequires:	xemacs}
@@ -35,6 +40,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # definitions useful for vim-global-tags subpackage
 %define		_vimdatadir	%{_datadir}/vim/vimfiles
+
+%define		filterout_c	-Werror=format-security
 
 %description
 GNU GLOBAL is a source code tag system that works the same way across
@@ -245,19 +252,17 @@ i odwołań systemu GLOBAL używając polecenia less.
 
 %prep
 %setup -q
-%patch10 -p1
-%patch20 -p1
-%{?with_home_etc:%patch30 -p1}
-%patch40 -p1
+#%patch20 -p1
 
 %build
+%{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
 	%{?with_pgsql:--with-postgres=shared} \
-	%{?with_home_etc:--with-home-etc=shared}
+	%{?with_home_etc:--with-home-etc=/usr}
 %{__make}
 
 %install
@@ -274,12 +279,12 @@ install -d $RPM_BUILD_ROOT%{_bindir} \
 
 # /etc/shrc.d/*.sh hook for globash
 cat << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.sh
-alias globash='%{?with_home_etc:GLOBASH_HOME="\$HOME_ETC" }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+alias globash='/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
 # /etc/shrc.d/*.csh hook for globash
 cat << EOF > $RPM_BUILD_ROOT/etc/shrc.d/globash.csh
-alias globash '%{?with_home_etc:setenv GLOBASH_HOME = "\$HOME_ETC" ; }/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
+alias globash '/bin/bash --rcfile %{_sysconfdir}/gtags/globash.rc'
 EOF
 
 # /etc/profile.d/*sh hooks for less-global-tags
