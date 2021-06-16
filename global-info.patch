@@ -1,0 +1,14 @@
+--- global-6.6.6/doc/global.texi.orig	2021-05-02 09:38:53.000000000 +0200
++++ global-6.6.6/doc/global.texi	2021-06-15 21:34:39.486192199 +0200
+@@ -11,9 +11,9 @@
+ @syncodeindex op cp
+ 
+ @ifinfo
+-@dircategory Development
++@dircategory Programming tools:
+ @direntry
+-* Global: (global).             GNU Global source code tagging system.
++* Global: (global).			GNU Global source code tagging system
+ @end direntry
+ @end ifinfo
+ 

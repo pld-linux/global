@@ -1,0 +1,25 @@
+--- global-6.6.6/configure.ac.orig	2021-05-02 09:38:53.000000000 +0200
++++ global-6.6.6/configure.ac	2021-06-13 19:24:08.394754783 +0200
+@@ -239,9 +239,10 @@
+                 AC_MSG_RESULT(no)
+         else
+                 case "$withval" in
+-                ''|yes) HOMEETC=/usr/local;;
++                ''|yes) HOMEETC=default;;
+                 *)      HOMEETC="$withval";;
+                 esac
++                if test x"$HOMEETC" != xdefault; then
+                 if ! test -d "$HOMEETC"; then
+                         AC_MSG_ERROR([directory '$HOMEETC' not found.])
+                 fi
+@@ -249,7 +250,9 @@
+                         AC_MSG_ERROR([header '$HOMEETC/include/home_etc.h' not found.])
+                 fi
+                 AM_CPPFLAGS="$AM_CPPFLAGS -I$HOMEETC/include"
+-                LDFLAGS="$LDFLAGS -L$HOMEETC/lib -lhome_etc"
++                LDFLAGS="$LDFLAGS -L$HOMEETC/lib"
++                fi
++                LIBS="$LIBS -lhome_etc"
+                 AC_DEFINE(HAVE_HOME_ETC_H,1,[Define if you use home-etc facility.])
+                 AC_MSG_RESULT([yes, using $HOMEETC])
+         fi

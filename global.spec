@@ -1,11 +1,4 @@
-# TODO
-# unpackaged:
-#%attr(755,root,root) %{_bindir}/globash
-#%attr(755,root,root) %{_bindir}/gtags-cscope
-#%{_libdir}/gtags/*.{so,la,a}
-#%{_datadir}/gtags/*
-#%{_mandir}/man1/globash.1*
-
+#
 # Conditional build:
 %bcond_without	xemacs		# without xemacs subpackage
 %bcond_without	pgsql		# without PostgreSQL support
@@ -14,13 +7,15 @@
 Summary:	GNU GLOBAL - common source code tag system
 Summary(pl.UTF-8):	GNU GLOBAL - system list odwołań powszechnego użytku
 Name:		global
-Version:	6.3.4
+Version:	6.6.6
 Release:	0.1
-License:	GPLv2+ and BSD
+License:	GPL v3+
 Group:		Development/Tools
-Source0:	http://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
-# Source0-md5:	06aee2306ac2113e6347043066679eea
+Source0:	https://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
+# Source0-md5:	a8bfe02e0872db39bd11758f82a01c10
 #Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
+Patch0:		%{name}-link.patch
+Patch1:		%{name}-info.patch
 Patch20:	%{name}-ac-shared-pgsql.patch
 URL:		http://www.gnu.org/software/global/
 BuildRequires:	autoconf
@@ -252,7 +247,12 @@ i odwołań systemu GLOBAL używając polecenia less.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 #%patch20 -p1
+
+%{__sed} -i -e '1s,/usr/bin/env perl,%{__perl},' plugin-factory/maps2conf.pl
+%{__sed} -i -e '1s,/usr/bin/env python$,%{__python3},' plugin-factory/pygments_parser.py.in
 
 %build
 %{__libtoolize}
@@ -262,7 +262,7 @@ i odwołań systemu GLOBAL używając polecenia less.
 %{__automake}
 %configure \
 	%{?with_pgsql:--with-postgres=shared} \
-	%{?with_home_etc:--with-home-etc=/usr}
+	%{?with_home_etc:--with-home-etc}
 %{__make}
 
 %install
@@ -295,56 +295,71 @@ echo 'setenv LESSGLOBALTAGS global'  > $RPM_BUILD_ROOT/etc/profile.d/less-global
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/gtags/*.{la,a}
+
 # documentation and other stuff
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/{AUTHORS,NEWS,COPYING,ChangeLog,FAQ,INSTALL,LICENSE,README,THANKS} $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-rm -f $RPM_BUILD_ROOT%{_datadir}/gtags/{dir.gz,nvi*gtags.diff}
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/{AUTHORS,BUILD_TOOLS,NEWS,COPYING,COPYING.LIB,ChangeLog,DONORS,FAQ,INSTALL,LICENSE,PLUGIN*,README*,SERVERSIDE_HOWTO,THANKS}
+# $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+#%{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/{dir.gz,nvi*gtags.diff}
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 # vim support
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.vim $RPM_BUILD_ROOT%{_vimdatadir}/plugin
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/*.vim $RPM_BUILD_ROOT%{_vimdatadir}/plugin
 
 # perl wrapper
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.pl $RPM_BUILD_ROOT%{_bindir}
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.pl $RPM_BUILD_ROOT%{_bindir}
 
 # globash
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/globash.rc $RPM_BUILD_ROOT%{_sysconfdir}/gtags
 
 # default config
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.conf $RPM_BUILD_ROOT%{_sysconfdir}/gtags
 
 # emacs support
 %if %{with xemacs}
-mv -f $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.el $RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
+%{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.el $RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
 xemacs -batch -no-autoloads -l autoload -f batch-update-directory \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags
 xemacs -batch -vanilla -f batch-byte-compile \
 	$RPM_BUILD_ROOT%{_datadir}/xemacs-packages/lisp/gtags/gtags.el
 find $RPM_BUILD_ROOT%{_datadir} -type f -name "*.el" | while read i; do test ! -f ${i}c || rm -f $i; done
+%else
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/gtags.el
 %endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p	/sbin/postshell
+%post	-p /sbin/postshell
 -/usr/sbin/fix-info-dir -c %{_infodir}
 
-%postun	-p	/sbin/postshell
+%postun	-p /sbin/postshell
 -/usr/sbin/fix-info-dir -c %{_infodir}
 
 %files
 %defattr(644,root,root,755)
-%doc %{_docdir}/%{name}-%{version}
-%attr(755,root,root) %{_bindir}/g*tags
+%doc AUTHORS NEWS ChangeLog DONORS FAQ LICENSE README THANKS plugin-factory/PLUGIN_HOWTO script/SERVERSIDE_HOWTO
 %attr(755,root,root) %{_bindir}/global
+%attr(755,root,root) %{_bindir}/gtags
+%attr(755,root,root) %{_bindir}/gtags-cscope
 %dir %{_sysconfdir}/gtags
 %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/gtags/gtags.conf
-%{_mandir}/man1/global*
-%{_mandir}/man1/g*tags*
-%{_infodir}/*.info*
+%dir %{_libdir}/gtags
+%attr(755,root,root) %{_libdir}/gtags/exuberant-ctags.so
+%attr(755,root,root) %{_libdir}/gtags/pygments-parser.so
+%attr(755,root,root) %{_libdir}/gtags/universal-ctags.so
+%attr(755,root,root) %{_libdir}/gtags/user-custom.so
+%{_datadir}/gtags
+%{_mandir}/man1/global.1*
+%{_mandir}/man1/gtags.1*
+%{_mandir}/man1/gtags-cscope.1*
+%{_mandir}/man5/gtags.conf.5*
+%{_infodir}/global.info*
 
 %files htags
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/htags
+%attr(755,root,root) %{_bindir}/htags-server
 %attr(755,root,root) %{_bindir}/gozilla
 %{_mandir}/man1/htags*
 %{_mandir}/man1/gozilla*
@@ -355,8 +370,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files globash
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/globash
 %attr(755,root,root) %config %{_sysconfdir}/shrc.d/globash*
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gtags/globash.rc
+%{_mandir}/man1/globash.1*
 
 %if %{with xemacs}
 %files -n xemacs-gtags-mode-pkg
@@ -371,4 +388,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n vim-global-tags
 %defattr(644,root,root,755)
-%{_vimdatadir}/plugin/*
+%{_vimdatadir}/plugin/gtags.vim
+%{_vimdatadir}/plugin/gtags-cscope.vim
