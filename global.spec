@@ -247,8 +247,8 @@ i odwołań systemu GLOBAL używając polecenia less.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 #%patch20 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env perl,%{__perl},' plugin-factory/maps2conf.pl
