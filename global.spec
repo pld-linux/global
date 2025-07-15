@@ -249,7 +249,7 @@ i odwołań systemu GLOBAL używając polecenia less.
 %setup -q
 %patch -P0 -p1
 %patch -P1 -p1
-#%patch20 -p1
+#%%patch20 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env perl,%{__perl},' plugin-factory/maps2conf.pl
 %{__sed} -i -e '1s,/usr/bin/env python$,%{__python3},' plugin-factory/pygments_parser.py.in
