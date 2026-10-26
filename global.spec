@@ -1,36 +1,37 @@
 #
 # Conditional build:
-%bcond_without	xemacs		# without xemacs subpackage
-%bcond_without	pgsql		# without PostgreSQL support
-%bcond_without	home_etc	# use home_etc
+%bcond_without	xemacs		# xemacs mode subpackage
+%bcond_without	sqlite		# SQLite 3 support
+%bcond_without	home_etc	# home_etc support
 
-Summary:	GNU GLOBAL - common source code tag system
-Summary(pl.UTF-8):	GNU GLOBAL - system list odwołań powszechnego użytku
+Summary:	GNU Global - common source code tag system
+Summary(pl.UTF-8):	GNU Global - system list odwołań powszechnego użytku
 Name:		global
-Version:	6.6.6
+Version:	6.7
 Release:	0.1
 License:	GPL v3+
 Group:		Development/Tools
 Source0:	https://ftp.gnu.org/gnu/global/%{name}-%{version}.tar.gz
-# Source0-md5:	a8bfe02e0872db39bd11758f82a01c10
+# Source0-md5:	351b74744385530a1422da44b757728c
 #Source1:	http://www.vim.org/scripts/download_script.php?src_id=2708
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-info.patch
-Patch20:	%{name}-ac-shared-pgsql.patch
 URL:		http://www.gnu.org/software/global/
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.71
+BuildRequires:	automake >= 1:1.9.3
 %{?with_home_etc:BuildRequires:	home-etc-devel}
-BuildRequires:	libtool
-%{?with_pgsql:BuildRequires:	postgresql-devel}
+BuildRequires:	libltdl-devel >= 2:2.2.6b
+BuildRequires:	libtool >= 2:2.2.6b
+%{?with_sqlite:BuildRequires:	sqlite3-devel >= 3}
 BuildRequires:	texinfo
 %{?with_xemacs:BuildRequires:	xemacs}
 Requires:	coreutils
 Requires:	findutils
 Requires:	idutils
+Requires:	python3 >= 1:3
+Requires:	python3-pygments
 Requires:	setup >= 2.4.6-2
 Provides:	gtags-%{version}-%{release}
-Provides:	htags-%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # definitions useful for vim-global-tags subpackage
@@ -39,67 +40,35 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		filterout_c	-Werror=format-security
 
 %description
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code. You can locate the specified function or method
 in source files and move there easily. It is useful to hack a large
 project containing many subdirectories, many general, main()-type
 functions. It allows you to create one tags container for a big code
 tree.
-%if %{with pgsql}
-Tagging information may be keept in the traditional db files, or shared
-GNU GLOBAL is a source code tag system that works the same way across
-diverse environments. It supports C, C++, Yacc, Java, PHP and
-assembler source code. You can locate the specified function or method
-in source files and move there easily. It is useful to hack a large
-project containing many subdirectories, many general, main()-type
-functions. It allows you to create one tags container for a big code
-tree. using the PostgreSQL database.
-%endif
+
 You can also find some subpackages, containing support for additional
-GNU GLOBAL is a source code tag system that works the same way across
-diverse environments. It supports C, C++, Yacc, Java, PHP and
-assembler source code. You can locate the specified function or method
-in source files and move there easily. It is useful to hack a large
-project containing many subdirectories, many general, main()-type
-functions. It allows you to create one tags container for a big code
-tree. using the PostgreSQL database. GLOBAL's features, and for
-compliance with common code editors (symbols' completion, jumping).
+Global's features, and for compliance with common code editors
+(symbols' completion, jumping).
 
 %description -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 Umożliwia on odszukanie podanej funkcji lub metody w plikach
 źródłowych i przeniesienie się do niej w łatwy sposób. Narzędzie to
 jest przydatne do dłubania w dużych projektach, zawierających mnóstwo
 podkatalogów, wiele funkcji głównych w stylu main(). Pozwala on
 utworzyć jeden kontener ze znacznikami dla dużego drzewa kodu.
-%if %{with pgsql}
-Informacje o znacznikach mogą być przechowywane w postaci plików db,
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
-kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Umożliwia on odszukanie podanej funkcji lub metody w plikach
-źródłowych i przeniesienie się do niej w łatwy sposób. Narzędzie to
-jest przydatne do dłubania w dużych projektach, zawierających mnóstwo
-podkatalogów, wiele funkcji głównych w stylu main(). Pozwala on
-utworzyć jeden kontener ze znacznikami dla dużego drzewa kodu. lub też
-współdzielone przy pomocy bazy danych PostgreSQL.
-%endif
+
 Można także znaleźć kilka podpakietów, które zawierają wsparcie dla
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
-kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
-Umożliwia on odszukanie podanej funkcji lub metody w plikach
-źródłowych i przeniesienie się do niej w łatwy sposób. Narzędzie to
-jest przydatne do dłubania w dużych projektach, zawierających mnóstwo
-podkatalogów, wiele funkcji głównych w stylu main(). Pozwala on
-utworzyć jeden kontener ze znacznikami dla dużego drzewa kodu. lub też
-współdzielone przy pomocy bazy danych PostgreSQL. dodatkowych
-mechanizmów GLOBAL, a także pozwalają na współpracę z niektórymi
-znanymi edytorami kodu (dopełnianie nazw symboli, przeskakiwanie).
+dodatkowych mechanizmów Global, a także pozwalają na współpracę z
+niektórymi znanymi edytorami kodu (dopełnianie nazw symboli,
+przeskakiwanie).
 
 %package htags
-Summary:	GNU GLOBAL - programs for making hypertext from source code
-Summary(pl.UTF-8):	GNU GLOBAL - programy produkujące hypertext z kodów źródłowych
+Summary:	GNU Global - programs for making hypertext from source code
+Summary(pl.UTF-8):	GNU Global - programy produkujące hypertext z kodów źródłowych
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
@@ -107,7 +76,7 @@ Provides:	gozilla-%{version}-%{release}
 Provides:	htags-%{version}-%{release}
 
 %description htags
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
@@ -118,7 +87,7 @@ repository, which makes it more easy to navigate though the code over
 the Web.
 
 %description htags -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Htags jest narzędziem generującym hypertext z kodów. Pakiet ten
@@ -128,15 +97,15 @@ elegancki sposób. Htags potrafi również współpracować z repozytorium
 CVS ułatwiając nawigację w kodach poprzez WWW.
 
 %package gtags-perl-wrapper
-Summary:	GNU GLOBAL - gtags wrapper for tools which use Perl
-Summary(pl.UTF-8):	GNU GLOBAL - program pomocniczy dla narzędzi używających Perl
+Summary:	GNU Global - gtags wrapper for tools which use Perl
+Summary(pl.UTF-8):	GNU Global - program pomocniczy dla narzędzi używających Perl
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	perl-base >= 5.005
 Provides:	gtags-perl-wrapper-%{version}-%{release}
 
 %description gtags-perl-wrapper
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
@@ -144,22 +113,22 @@ This package contains simple Perl wrapper, which allows to use the
 system for some tools and editors.
 
 %description gtags-perl-wrapper -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet zawiera program pomocniczy, który pozwala używać tego
 systemu niektórym narzędziom i edytorom.
 
 %package globash
-Summary:	GNU GLOBAL - Bash customization to walk though the source trees
-Summary(pl.UTF-8):	GNU GLOBAL - usprawnienie dla Bash do poruszania się po drzewach źródeł
+Summary:	GNU Global - Bash customization to walk though the source trees
+Summary(pl.UTF-8):	GNU Global - usprawnienie dla Bash do poruszania się po drzewach źródeł
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	bash >= 2.05
 Provides:	globash-%{version}-%{release}
 
 %description globash
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
@@ -170,7 +139,7 @@ invocation, tag mark facility, and a cookie facility for managing
 directories.
 
 %description globash -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala wywoływać odpowiednio przystosowaną wersję powłoki
@@ -181,88 +150,88 @@ edytorów lub przeglądarek, mechanizm wyróżniania znaczników, oraz
 mechanizm ciasteczek pomagający zarządzać katalogami.
 
 %package -n xemacs-gtags-mode-pkg
-Summary:	XEmacs mode for the GNU GLOBAL source tag system
-Summary(pl.UTF-8):	Tryb systemu list odwołań GNU GLOBAL dla edytora XEmacs
+Summary:	XEmacs mode for the GNU Global source tag system
+Summary(pl.UTF-8):	Tryb systemu list odwołań GNU Global dla edytora XEmacs
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 Requires:	xemacs
 
 %description -n xemacs-gtags-mode-pkg
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
-This package allows to integrate the GLOBAL source tag system with the
+This package allows to integrate the Global source tag system with the
 XEmacs editor.
 
 %description -n xemacs-gtags-mode-pkg -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
-Ten pakiet pozwala zintegrować system GLOBAL z edytorem XEmacs.
+Ten pakiet pozwala zintegrować system Global z edytorem XEmacs.
 
 %package -n vim-global-tags
-Summary:	ViM editor plugin for GNU GLOBAL source tag system
-Summary(pl.UTF-8):	wtyczka dla edytora ViM do systemu odwołań GNU GLOBAL
+Summary:	ViM editor plugin for GNU Global source tag system
+Summary(pl.UTF-8):	wtyczka dla edytora ViM do systemu odwołań GNU Global
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
 # for _vimdatadir existence
 Requires:	vim-rt >= 4:6.3.058-3
 
 %description -n vim-global-tags
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
-This package allows users to use GLOBAL tag system in ViM editor.
+This package allows users to use Global tag system in ViM editor.
 
 %description -n vim-global-tags -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala użytkownikom na używanie systemu znaczników i
-odwołań GLOBAL w edytorze ViM.
+odwołań Global w edytorze ViM.
 
 %package -n less-global-tags
-Summary:	less pager's helper for GNU GLOBAL source tag system
-Summary(pl.UTF-8):	wsparcie dla polecenia less do systemu odwołań GNU GLOBAL
+Summary:	less pager's helper for GNU Global source tag system
+Summary(pl.UTF-8):	wsparcie dla polecenia less do systemu odwołań GNU Global
 Group:		Development/Tools
 Requires:	%{name} = %{version}-%{release}
-Requires:	xemacs
+Requires:	less
 
 %description -n less-global-tags
-GNU GLOBAL is a source code tag system that works the same way across
+GNU Global is a source code tag system that works the same way across
 diverse environments. It supports C, C++, Yacc, Java, PHP and
 assembler source code.
 
-This package allows users to navigate through GLOBAL tags and
+This package allows users to navigate through Global tags and
 references system using less pager.
 
 %description -n less-global-tags -l pl.UTF-8
-GNU GLOBAL jest powszechnym systemem generowania list odwołań dla
+GNU Global jest powszechnym systemem generowania list odwołań dla
 kodów źródłowych napisanych w C, C++, Yacc, Java, PHP i asemblerze.
 
 Ten pakiet pozwala użytkownikom na nawigację poprzez system znaczników
-i odwołań systemu GLOBAL używając polecenia less.
+i odwołań systemu Global używając polecenia less.
 
 %prep
 %setup -q
 %patch -P0 -p1
 %patch -P1 -p1
-#%%patch20 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env perl,%{__perl},' plugin-factory/maps2conf.pl
-%{__sed} -i -e '1s,/usr/bin/env python$,%{__python3},' plugin-factory/pygments_parser.py.in
 
 %build
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure \
-	%{?with_pgsql:--with-postgres=shared} \
-	%{?with_home_etc:--with-home-etc}
+	%{?with_home_etc:--with-home-etc} \
+	--with-python-interpreter=%{__python3} \
+	%{?with_pgsql:--with-sqlite3=/usr}
+
 %{__make}
 
 %install
@@ -295,13 +264,14 @@ echo 'setenv LESSGLOBALTAGS global'  > $RPM_BUILD_ROOT/etc/profile.d/less-global
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/gtags/*.{la,a}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/gtags/*.la
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 # documentation and other stuff
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/{AUTHORS,BUILD_TOOLS,NEWS,COPYING,COPYING.LIB,ChangeLog,DONORS,FAQ,INSTALL,LICENSE,PLUGIN*,README*,SERVERSIDE_HOWTO,THANKS}
-# $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
-#%{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/{dir.gz,nvi*gtags.diff}
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
+
+# patches for other software
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/gtags/{elvis-2.2_0.patch,uctags-scheme.c-diff,vim74-gtags-cscope.patch}
 
 # vim support
 %{__mv} $RPM_BUILD_ROOT%{_datadir}/gtags/*.vim $RPM_BUILD_ROOT%{_vimdatadir}/plugin
@@ -345,11 +315,27 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/gtags
 %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/gtags/gtags.conf
 %dir %{_libdir}/gtags
-%attr(755,root,root) %{_libdir}/gtags/exuberant-ctags.so
-%attr(755,root,root) %{_libdir}/gtags/pygments-parser.so
-%attr(755,root,root) %{_libdir}/gtags/universal-ctags.so
-%attr(755,root,root) %{_libdir}/gtags/user-custom.so
-%{_datadir}/gtags
+%{_libdir}/gtags/exuberant-ctags.so
+%{_libdir}/gtags/pygments-parser.so
+%{_libdir}/gtags/universal-ctags.so
+%{_libdir}/gtags/user-custom.so
+%dir %{_datadir}/gtags
+%{_datadir}/gtags/icons
+%{_datadir}/gtags/jquery
+%dir %{_datadir}/gtags/script
+%attr(755,root,root) %{_datadir}/gtags/script/elvis-global
+%attr(755,root,root) %{_datadir}/gtags/script/global-client
+%attr(755,root,root) %{_datadir}/gtags/script/gtags-client
+%attr(755,root,root) %{_datadir}/gtags/script/htags-client
+%attr(755,root,root) %{_datadir}/gtags/script/less-global
+%attr(755,root,root) %{_datadir}/gtags/script/maps2conf.pl
+%attr(755,root,root) %{_datadir}/gtags/script/pygments_parser.py
+%{_datadir}/gtags/*.cgi
+%{_datadir}/gtags/dot_htaccess
+%{_datadir}/gtags/elvis.rc
+%{_datadir}/gtags/geco.rc
+%{_datadir}/gtags/jscode_*
+%{_datadir}/gtags/style.css
 %{_mandir}/man1/global.1*
 %{_mandir}/man1/gtags.1*
 %{_mandir}/man1/gtags-cscope.1*
@@ -361,8 +347,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/htags
 %attr(755,root,root) %{_bindir}/htags-server
 %attr(755,root,root) %{_bindir}/gozilla
-%{_mandir}/man1/htags*
-%{_mandir}/man1/gozilla*
+%{_mandir}/man1/htags.1*
+%{_mandir}/man1/htags-server.1*
+%{_mandir}/man1/gozilla.1*
 
 %files gtags-perl-wrapper
 %defattr(644,root,root,755)
@@ -371,7 +358,8 @@ rm -rf $RPM_BUILD_ROOT
 %files globash
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/globash
-%attr(755,root,root) %config %{_sysconfdir}/shrc.d/globash*
+%attr(755,root,root) %config %{_sysconfdir}/shrc.d/globash.csh
+%attr(755,root,root) %config %{_sysconfdir}/shrc.d/globash.sh
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gtags/globash.rc
 %{_mandir}/man1/globash.1*
 
